@@ -172,9 +172,9 @@ body {
     outline: 0;
 }
 .main-section .top-nav .prev-btn button i{
-   color: #838181;
-   font-size: 22px;
-   margin-right: 20px;
+    color: #838181;
+    font-size: 22px;
+    margin-right: 20px;
 }
 
 .top-nav .login-btn .sign-up{
@@ -215,7 +215,6 @@ body {
     display: flex;
     gap: 20px;
     overflow: hidden;
-   
 }
 
 .spotify-playlist .card .item{
@@ -281,28 +280,27 @@ body {
     gap: 50px;
   }
   .footer-section .footer .footer-links .footer-column{
-   margin: 0 12px;
+    margin: 0 12px;
   }
   .footer-section .footer .footer-links div {
-   color: #fff;
-   font-weight: 600;
-   margin-bottom: 12px;
-   font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 16px;
   }
   .footer-section .footer .footer-links ul li{
-   list-style: none;
-   margin: 6px 0;
+    list-style: none;
+    margin: 6px 0;
   }
   .footer-section .footer .footer-links ul li a{
-   text-decoration: none;
-   color: #969393;
-   font-size: 14px;
-   cursor: pointer;
+    text-decoration: none;
+    color: #969393;
+    font-size: 14px;
+    cursor: pointer;
   }
   .footer-section .footer .footer-links ul li a:hover{
-   text-decoration: underline;
-   color: #fff;
-   
+    text-decoration: underline;
+    color: #fff;
   }
 
 
