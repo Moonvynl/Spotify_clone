@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.profile {
+    max-width: 700px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.nickname {
+    color: #d3d3d3;
+    margin: 0;
+    font-size: 35px;
+}
+
+</style>
+
+<div class="profile">
+    <img class="avatar" src="{{request.user.avatar.url}}" alt="Profile Picture">
+    <h1 class="nickname">{{request.user.username}}</h1>
+</div>
+<hr>
+<div class="spotify-playlist" style="margin: auto;">
+    <h1 style="padding: 5px; color: #d3d3d3;">Ваші плейлісти</h1>
+    <div class="card">
+    {% for playlist in playlists %}
+    <a href="{% url 'spotify:playlist-detail' playlist.id %}" style="text-decoration: none;">
+        <div class="item">
+            <img src="{{playlist.img.url}}" alt="" style="width: 160px; height: 160px;">
+            <div class="play-btn">
+                <span><i class="fa-solid fa-play"></i></span>
+            </div>
+            <h4>{{playlist.title}}</h4>
+            <p>{{playlist.user}}</p>
+        </div>
+    </a>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.playlist-detail {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.playlist-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.playlist-cover {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.playlist-info {
+    flex: 1;
+}
+
+.playlist-detail-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 5px 0;
+    color: white;
+}
+
+.playlist-detail-author {
+    font-size: 14px;
+    color: #888;
+    margin: 0;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.track-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.track-number {
+    font-size: 16px;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+    margin-right: 10px;
+    color: white;
+}
+
+.track-details {
+    flex: 1;
+}
+
+.track-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: white;
+}
+
+.track-artist {
+    font-size: 14px;
+    color: #888;
+    margin: 0;
+}
+
+.track-duration {
+    font-size: 14px;
+    color: #888;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    background-color: #ccc;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+.search-container input[type="text"] {
+    flex: 1;
+    border: none;
+    background: none;
+    outline: none;
+    color: #333;
+    padding: 8px;
+}
+.search-container button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 16px;
+}
+.search-container button:hover {
+    color: #555;
+}
+
+.search-title {
+    color: white;
+    padding: 5px;
+    margin-left: -55px;
+}
+
+/* Popup form */
+.popup-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000;
+    color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    color: #fff;
+    font-size: 18px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #333;
+    color: #fff;
+}
+
+.btn {
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-save {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    margin-right: 10px;
+}
+
+.btn-close {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    padding: 5px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: #999;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-song {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content-song {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+
+.dropdown-content-song a:hover {
+    background-color: #ddd;
+}
+
+.dropdown-content-song a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content-song {
+    right: 0;
+}
+
+.dropbtn-song {
+	background: none;
+	color: grey;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    margin-right: 30px;
+}   
+</style>
+
+
+
+<div id="popup-form" class="popup-form">
+    <h2>Змінити деталі</h2>
+    <form method="post" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_title" class="form-label"></label>
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            <label for="id_img" class="form-label"></label>
+            {{ form.img }}
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-save">Зберегти</button>
+            <button type="button" class="btn btn-close" onclick="togglePopup()">&times;</button>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="playlist-detail">
+    <div class="playlist-header" style="cursor: pointer;">
+        <img onclick="togglePopup();" src="{% if playlist.img %}{{ playlist.img.url }}{% else %}images/default-playlist.png{% endif %}" alt="{{ playlist.title }}" class="playlist-cover">
+        <div class="playlist-info">
+            <h1 class="playlist-detail-title" id="playlist-title" onclick="togglePopup();">{{ playlist.title }}</h1>
+            <p class="playlist-detail-author">{{ playlist.user }}</p>
+        </div>
+    </div>
+    <div class="playlist-tracks">
+        <hr style="padding: 0;">
+        <ol class="track-list">
+            {% for song in playlist.songs.all %}
+            {% include 'spotify/song.html' %}
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+<div class="container" style="margin-left: 100px;">
+    <h2 class="search-title">Підберемо кілька треків для вашого плейліста</h2>
+    <div class="search-container">
+            <input type="text" id="searchInput" name="query" placeholder="Пошук..." />
+            <a id="searchButton" href="{% url 'spotify:search' %}" style="color: #888;"><i class="fa-solid fa-magnifying-glass"></i></a>
+    </div>
+</div>
+
+
+<script>
+function togglePopup() {
+            var popup = document.getElementById('popup-form');
+            if (popup.style.display === 'none') {
+                popup.style.display = 'block';
+            } else {
+                popup.style.display = 'none';
+            }
+        }
+
+</script>
+
+{% endblock %}
+

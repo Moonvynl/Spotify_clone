@@ -1,0 +1,96 @@
+<style>
+    /* Style the dropdown container */
+
+
+    /* Style the dropdown button */
+    .add-song-to-playlist {
+        background-color: #1DB954;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Style the nested dropdown content */
+    .nested-dropdown {
+        display: none;
+        position: absolute;
+        background-color: rgba(17,17,17,255);
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    /* Style the nested dropdown options */
+    .nested-dropdown-content {
+        padding: 12px 16px;
+        display: block;
+    }
+
+    /* Style the form elements */
+    form {
+        display: inline-block;
+    }
+
+    select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 8px;
+    }
+
+    input[type="submit"] {
+        background-color: #1DB954;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Show the nested dropdown content when the button is hovered over */
+    .dropdown-content-song:hover .nested-dropdown {
+        display: block;
+    }
+</style>
+<li class="track-item">
+    <span class="track-number" data-audio="{{ song.url.url }}" data-title="{{ song.title }}">{{ forloop.counter }}
+    </span>
+    <img src="{{ song.img.url }}" alt="{{ song.title }}" class="song-image" style="height: 45px; width: 45px; margin-right: 5px;">
+    <div class="track-details">
+        <h3 class="track-name" style="color: #ddd;">{{ song.title }}</h3>
+        <a class="track-artist" href="{% url 'spotify:author-detail' song.artist.id %}">{{ song.artist }}</a>
+    </div>
+    <span class="track-duration">{{ song.duration }}</span>
+<div class="dropdown-song">
+    <button class="dropbtn-song">⋮</button>
+    <div class="dropdown-content-song">
+        <p class="add-song-to-playlist" >Add Song to playlist</p>
+        <div id="playlist-content" class="nested-dropdown" >
+            <div class="nested-dropdown-content">
+                <form method="post" action="{% url 'spotify:add-song-to-playlist' song.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="song_id" value="{{ song.pk }}">
+                    <select name="playlist_id">
+                        {% for playlist in user_playlists %}
+                            <option value="{{ playlist.id }}">{{ playlist.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Add to Playlist">
+                </form>
+            </div>
+        </div>
+    </div>
+</li>
+
+<script>
+function showPlaylists() {
+    var playlistContent = document.getElementById('playlist-content');
+    playlistContent.style.display = 'block';
+}
+
+function hidePlaylists() {
+    var playlistContent = document.getElementById('playlist-content');
+    playlistContent.style.display = 'none';
+}
+</script>

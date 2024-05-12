@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+<!-- ............Main Section Starts From Here.............. -->
+
+{% block content %}
+<div class="spotify-playlist">
+    <h2>Your playlists</h2>
+    <div class="card">
+    {% for playlist in playlists %}
+    <a href="{% url 'spotify:playlist-detail' playlist.id %}" style="text-decoration: none;">
+        <div class="item">
+            <img src="{{playlist.img.url}}" alt="" style="width: 160px; height: 160px;">
+            <div class="play-btn">
+                <span><i class="fa-solid fa-play"></i></span>
+            </div>
+            <h4>{{playlist.title}}</h4>
+           <p>{{playlist.user}}</p>
+        </div>
+    </a>
+    {% endfor %}
+
+        
+    </div>
+</div>
+
+<div class="spotify-playlist">
+    <h2>Trending Episodes</h2>
+    <div class="card">
+        <div class="item">
+            <img src="/media/playlist_default.png" alt="">
+            <div class="play-btn">
+                <span><i class="fa-solid fa-play"></i></span>
+            </div>
+            <h4>ANIMAL</h4>
+           <p>Manan Bhardwaj, Vishal Mishra, Jaani</p>
+        </div>
+
+        
+    </div>
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/stylesheet_auth.css' %}">
+    <title>Register</title>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Зареєструйтеся, щоб почати слухати</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="username" class="form-label">Ім'я:</label>
+            <input type="text" id="username" name="username">
+            {% for error in form.username.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+            <label for="password1" class="form-label">Пароль:</label>
+            <input type="password" id="password1" name="password1">
+            {% for error in form.password1.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+            <label for="password2" class="form-label">Підтвердіть пароль:</label>
+            <input type="password" id="password2" name="password2">
+            {% for error in form.password2.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+            <label for="avatar" class="form-label">Виберіть аватар:</label>
+            <input type="file" id="avatar" name="avatar" class="avatar-input">
+            {% for error in form.avatar.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+</body>
+</html>
