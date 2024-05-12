@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block search %}
+<style>
+.search-bar {
+    background-color: #535353;
+    border-radius: 20px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    margin-left: -1350px;
+    width: 350px;
+}
+
+.search-bar input[type="text"] {
+    width: 300px;
+    height: 38px;
+    padding: 3px;
+    border: none;
+    background-color: #535353;
+    color: white;
+    border-radius: 20px;
+}
+
+.search-bar input[type="text"]::placeholder {
+    color: #b3b3b3;
+}
+
+.search-bar button {
+    background-color: #1db954;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+
+#searchResults {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.login-btn{
+    margin-right: -450px;
+    padding-left: 800px; 
+}
+
+
+
+.search-results {
+    margin-top: 20px;
+}
+
+.track-list {
+    list-style: none;
+    padding: 0;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+}
+
+.track-number {
+    margin-right: 10px;
+    color: #b3b3b3;
+}
+
+.track-details {
+    flex-grow: 1;
+}
+
+.track-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.track-artist {
+    margin: 0;
+    color: #b3b3b3;
+}
+
+.track-duration {
+    color: #b3b3b3;
+}
+
+.dropdown{
+    margin-right: -1350px;
+}
+
+.dropdown-song {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content-song {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+
+.dropdown-content-song a:hover {
+    background-color: #ddd;
+}
+
+.dropdown-content-song a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content-song {
+    right: 0;
+}
+
+.dropbtn-song {
+	background: none;
+	color: grey;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    margin-right: 30px;
+}
+
+</style>
+
+<form method="get"> 
+    {% csrf_token %}
+    <div class="search-bar">
+        <input type="text" id="searchInput" name="query" placeholder="Search...">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </div>
+</form>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin: auto; padding: 10px;">
+    <div id="searchResults" class="search-results">
+        {% if songs %}
+            <ul class="track-list">
+                {% for song in songs %}
+                <input type="hidden" name="pk" value="{{ song.pk }}">
+                {% include 'spotify/song.html' %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>  
+</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

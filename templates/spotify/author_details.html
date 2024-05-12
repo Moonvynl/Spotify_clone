@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.profile {
+    max-width: 700px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.nickname {
+    color: #d3d3d3;
+    margin: 0;
+    font-size: 35px;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+}
+
+.track-number {
+    margin-right: 10px;
+    color: #b3b3b3;
+}
+
+.track-details {
+    flex-grow: 1;
+}
+
+.track-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.track-artist {
+    margin: 0;
+    color: #b3b3b3;
+}
+
+.tracks{
+    margin: 50px;
+}
+
+
+.dropdown{
+    margin-right: -1350px;
+}
+
+.dropdown-song {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content-song {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+
+.dropdown-content-song a:hover {
+    background-color: #ddd;
+}
+
+.dropdown-content-song a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content-song {
+    right: 0;
+}
+
+.dropbtn-song {
+	background: none;
+	color: grey;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    margin-right: 30px;
+}
+
+</style>
+    
+<div class="profile">
+    <img class="avatar" src="{{author.avatar.url}}" alt="Profile Picture">
+    <h1 class="nickname">{{author.username}}</h1>
+</div>
+<div class="tracks">
+    <hr style="padding: 0;">
+    <ol class="track-list">
+        {% for song in songs %}
+        {% include 'spotify/song.html' %}
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

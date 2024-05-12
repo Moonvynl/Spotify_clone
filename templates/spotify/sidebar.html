@@ -1,0 +1,65 @@
+
+<div class="sidebar">
+    <div class="sidebar-nav">
+        <ul style="padding: 5px;">
+            <li><a href="{% url 'spotify:home' %}">
+                <span><i class="fa-solid fa-house"></i></span>
+                <span>Home</span>
+            </a></li>
+
+            <li>
+                <a href="{% url 'spotify:search' %}">
+                <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                <span>Search</span>
+            </a>
+        </li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-nav box2">
+        <ul style="padding: 5px;">
+            <li><a href="">
+                    <span><i class="fa-solid fa-book"></i></span>
+                    <span class="library">Your Library</span>
+                    <a href="{% url 'spotify:playlist-create' %}">
+                        <i class="fa-regular fa-plus" style="margin-left:180px;"></i>
+                    </a>
+                </a>
+            </li>
+            
+            {% block library %}
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <ul class="playlists" id="sidebar-content">
+                            {% for playlist in playlists %}
+                                <li class="playlist-item">
+                                    <a href="{% url 'spotify:playlist-detail' playlist.id %}">
+                                        <div class="playlist-row">
+                                            <div class="playlist-image">
+                                                <img src="{% if playlist.img %}{{ playlist.img.url }}{% else %}images/default-playlist.png{% endif %}" alt="{{ playlist.title }}">
+                                            </div>
+                                            <div class="playlist-details" style="padding-left: 10px;">
+                                                <span class="playlist-title" style="color: #e0e0e0;">{{ playlist.title }}</span>
+                                                <br>
+                                                <span class="playlist-author">Плейліст • {{ playlist.user }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                {% else %}
+                <li>
+                    <div class="sidebar-scroll">
+                        <div class="create-playlist">
+                            <h4>Створи свій перший плейліст</h4>
+                            <p>Це легко, ми допоможемо тобі</p>
+                            <button>Створити плейліст</button>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+            {% endblock %}
+        </ul>
+    </div>
+</div>
